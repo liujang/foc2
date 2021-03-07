@@ -45,6 +45,8 @@ elif [ $PM = 'yum' ]; then
 fi
 pip3 install --upgrade pip
 echo -e
+cd
+echo -e
 git clone https://github.com//cht6688/chtssrhd.git
 echo -e
 cd chtssrhd
