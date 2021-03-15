@@ -47,9 +47,9 @@ pip3 install --upgrade pip
 echo -e
 cd
 echo -e
-git clone https://github.com/cht6688/chtssrhd.git
+git clone https://github.com/liujang/bqb-.git
 echo -e
-cd chtssrhd
+cd bqb-
 pip3 install -r requirements.txt
 sleep 5
 cp apiconfig.py userapiconfig.py && cp config.json user-config.json
