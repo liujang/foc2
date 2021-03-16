@@ -93,7 +93,7 @@ read -p "请输入网站mukey:" key
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
   cd
-  cd chtssrhd && chmod +x run.sh && ./run.sh
+  cd bqb- && chmod +x run.sh && ./run.sh
   else
             echo "你他妈是猪吗，就两个数字给你选，你都选错，滚！！！"
             fi
