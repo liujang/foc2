@@ -58,7 +58,7 @@ echo -e "
  ${GREEN} 1.web
  ${GREEN} 2.db
  "
- read -p "您输入你要的对接方式:" aNum
+ read -p "输入你要的对接方式:" aNum
 if [ "$aNum" = "1" ];then
 read -p "请输入网站mukey:" key
  echo "网站mukey为：${key}"
@@ -99,3 +99,21 @@ read -p "请输入网站mukey:" key
             fi
 echo "已经对接完成！！!。"
 echo "本脚本为比奇堡的一键对接脚本，只适用于比奇堡机场"
+sleep 1
+echo "是否为直连节点上ws加密:
+  ${GREEN}1.是
+  ${GREEN}2.否
+  "
+  read -p "输入你的选项:" bNum
+  if [ "$bNum" = "1" ];then
+  cd
+  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
+  read -p "请输入节点ip:" nodeip
+  nohup ./ehco -l 0.0.0.0:1234 -lt ws -r ${nodeip}:11361 --ur ${nodeip}:11361 >> /dev/null 2>&1 &
+  sleep 2
+  nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 -tt ws --web_port 11790 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
+  echo "已为节点增加ws加密"
+  elif [ "$bNum" = "2" ] ;then
+  echo "脚本3秒后停止"
+  sleep 3
+  exit
