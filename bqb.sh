@@ -113,7 +113,7 @@ echo -e "是否为直连节点上ws加密:
   sleep 2
   nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 -tt ws --web_port 11790 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
   echo "已为节点增加ws加密"
-  elif [ "$bNum" = "2" ] ;then
+  else
+  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
   echo "脚本3秒后停止"
   sleep 3
-  exit
