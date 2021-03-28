@@ -92,11 +92,23 @@ read -p "请输入网站mukey:" key
  echo "节点序号为：${node}"
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
-  cd
-  cd bqb- && chmod +x run.sh && ./run.sh
   else
             echo "你他妈是猪吗，就两个数字给你选，你都选错，滚！！！"
             fi
+ echo "是否为nat对接"
+ echo -e "
+ ${GREEN} 1.是
+ ${GREEN} 2.否
+ "
+ read -p "请输入选项:" cNum
+if [ "$cNum" = "1" ];then
+read -p "请输入nat端口:" natport
+sed -i '4s/11361/'${natport}'/' user-config.json
+else
+echo "不做改变"
+            fi
+cd
+cd bqb- && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
 echo "本脚本为比奇堡的一键对接脚本，只适用于比奇堡机场"
 sleep 1
