@@ -111,22 +111,30 @@ cd
 cd bqb- && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
 echo "本脚本为比奇堡的一键对接脚本，只适用于比奇堡机场"
-sleep 1
-echo -e "是否为直连节点上ws加密:
+sleep 2
+cd
+wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
+echo -e "是否为节点上ws加密:
   ${GREEN}1.是(以后要直连或流量转发的节点)
-  ${GREEN}2.否(以后要套隧道中转的节点)
+  ${GREEN}2.是(直连nat节点套ws,要隧道中转请选3)
+  ${GREEN}3.否(以后要套隧道中转的节点)
   "
   read -p "输入你的选项:" bNum
   if [ "$bNum" = "1" ];then
-  cd
-  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
   read -p "请输入节点ip:" nodeip
-  nohup ./ehco -l 0.0.0.0:1234 -lt ws -r ${nodeip}:11361 --ur ${nodeip}:11361 >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:1234 --lt ws -r ${nodeip}:11361 --ur ${nodeip}:11361 >> /dev/null 2>&1 &
   sleep 2
   nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 --tt ws --web_port 11790 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
   echo "已为节点增加ws加密"
+  elif [ "$bNum" = "2" ] ;then
+  read -p "请输入nat节点公网ip:" natip
+  read -p "请输入nat节点公网端口1:" natport1
+  read -p "请输入nat公网监听端口2:" natport2
+  nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
+  read -p "请输入nat公网监听端口3:" natport3
+  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port 11790 --ur ${natip}:${natport2} >> /dev/null 2>&1 &
+  echo "已为nat节点增加ws加密"
   else
-  cd
-  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
+  ehco "不做改变..."
   fi
   echo "已结束"
