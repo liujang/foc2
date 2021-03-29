@@ -124,7 +124,7 @@ echo -e "是否为节点上ws加密:
   read -p "请输入节点ip:" nodeip
   nohup ./ehco -l 0.0.0.0:1234 --lt ws -r ${nodeip}:11361 --ur ${nodeip}:11361 >> /dev/null 2>&1 &
   sleep 2
-  nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 --tt ws --web_port 11790 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 --tt ws --web_port 11791 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
   echo "已为节点增加ws加密"
   elif [ "$bNum" = "2" ] ;then
   read -p "请输入nat节点公网ip:" natip
