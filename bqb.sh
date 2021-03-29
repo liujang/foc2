@@ -132,7 +132,7 @@ echo -e "是否为节点上ws加密:
   read -p "请输入nat公网监听端口2:" natport2
   nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
   read -p "请输入nat公网监听端口3:" natport3
-  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port 11790 --ur ${natip}:${natport2} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port 11791 --ur ${natip}:${natport2} >> /dev/null 2>&1 &
   echo "已为nat节点增加ws加密"
   else
   ehco "不做改变..."
