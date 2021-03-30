@@ -47,9 +47,9 @@ pip3 install --upgrade pip
 echo -e
 cd
 echo -e
-git clone https://github.com/cht6688/chtssrhd.git
+git clone https://github.com/522707900/test.git
 echo -e
-cd chtssrhd
+cd test
 pip3 install -r requirements.txt
 sleep 3
 cp apiconfig.py userapiconfig.py && cp config.json user-config.json
@@ -107,6 +107,5 @@ else
 echo "不做改变"
             fi
 cd
-cd chtssrhd && chmod +x run.sh && ./run.sh
+cd test && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
-echo "本脚本为oreo的一键对接脚本，只适用于oreo机场"
