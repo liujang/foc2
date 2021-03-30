@@ -67,8 +67,6 @@ read -p "请输入网站mukey:" key
  echo "节点序号为：${node}"
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
-  cd
-  cd foc- && chmod +x run.sh && ./run.sh
  elif [ "$aNum" = "2" ] ;then
  sed -i '14s/modwebapi/glzjinmod/' userapiconfig.py
  read -p "请输入数据库地址:" ip
