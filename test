@@ -102,7 +102,7 @@ read -p "请输入网站mukey:" key
  read -p "您输入你要的对接方式:" bNum
 if [ "$bNum" = "1" ];then
 read -p "请输入nat端口:" natport
-sed -i '4s/28985/'${natport}'/' user-config.json
+sed -i '4s/11298/'${natport}'/' user-config.json
 else
 echo "不做改变"
             fi
