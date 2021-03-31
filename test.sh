@@ -59,6 +59,9 @@ echo -e "
  "
  read -p "您输入你要的对接方式:" aNum
 if [ "$aNum" = "1" ];then
+read -p "请输入网站地址:" webapi1
+sleep 1
+sed -i '16s/123456/'${webapi1}'/' userapiconfig.py
 read -p "请输入网站mukey:" key
  echo "网站mukey为：${key}"
  sleep 1
