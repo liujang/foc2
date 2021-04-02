@@ -226,8 +226,35 @@ apt-get purge ufw
     exit 1
   fi
   elif [ "$dNum" = "4" ] ;then
+  if [[ "$EUID" -ne 0 ]]; then
+    echo "false"
+  else
+    echo "true"
+  fi
+if [[ -f /etc/redhat-release ]]; then
+		release="centos"
+	elif cat /etc/issue | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+	elif cat /proc/version | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+    fi
+    
+     if [[ $release = "ubuntu" || $release = "debian" ]]; then
+apt install net-tools
+  elif [[ $release = "centos" ]]; then
+  yum install net-tools
+  else
+    exit 1
+  fi
    read -p "输入要杀掉的端口:" killport
-   lsof -i:${killport}
 kill -9 $(netstat -nlp | grep :${killport} | awk '{print $7}' | awk -F"/" '{ print $1 }')
 elif [ "$dNum" = "5" ] ;then
 echo -e "
