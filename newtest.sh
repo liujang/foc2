@@ -132,19 +132,26 @@ echo -e "是否为节点上ws加密:
   "
   read -p "输入你的选项:" bNum
   if [ "$bNum" = "1" ];then
-  read -p "请输入节点ip:" nodeip
-  nohup ./ehco -l 0.0.0.0:1234 --lt ws -r ${nodeip}:11361 --ur ${nodeip}:11361 >> /dev/null 2>&1 &
-  sleep 2
-  nohup ./ehco -l 0.0.0.0:12341 -r ws://${nodeip}:1234 --tt ws --web_port 11791 --ur ${nodeip}:1234 >> /dev/null 2>&1 &
-  echo "已为节点增加ws加密"
+  read -p "请输入ssr公网ip:" ssrip
+  read -p "请输入ssr公网端口:" ssrport1
+  read -p "请输入节点机监听端口1:" ldport1
+  nohup ./ehco -l 0.0.0.0:${ldport1} --lt ws -r ${ssrip}:${ssrport1} --ur ${ssrip}:${ssrport1} >> /dev/null 2>&1 &
+  sleep 1
+  read -p "请输入节点机监听端口2:" ldport2
+  read -p "请输入web_port端口(随便,但不可重复):" port3
+  nohup ./ehco -l 0.0.0.0:${ldport2} -r ws://${ssrip}:${ldport1} --tt ws --web_port ${port3} --ur ${ssrip}:${ldport1} >> /dev/null 2>&1 &
+  echo "最终监听端口为:"
+  echo ${ldport2}
   elif [ "$bNum" = "2" ] ;then
   read -p "请输入nat节点公网ip:" natip
-  read -p "请输入nat节点公网端口:" natport1
-  read -p "请输入nat公网监听端口:" natport2
+  read -p "请输入nat节点公网端口1:" natport1
+  read -p "请输入nat公网监听端口2:" natport2
   nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
-  read -p "请输入nat公网监听端口:" natport3
-  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port 11791 --ur ${natip}:${natport2} >> /dev/null 2>&1 &
-  echo "已为nat节点增加ws加密"
+  read -p "请输入nat公网监听端口3:" natport3
+  read -p "请输入web_port端口(随便,但不可重复):" port3
+  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
+  echo "最终监听端口为:"
+  echo ${natport3}
   else
   ehco "不做改变..."
   fi
