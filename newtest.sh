@@ -13,7 +13,7 @@ echo -e "
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.杀掉端口
  ${GREEN} 5.管理ssr后端
- ${GREEN} 5.安装内核
+ ${GREEN} 6.安装内核
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -149,7 +149,7 @@ echo -e "是否为节点上ws加密:
   ehco "不做改变..."
   fi
   echo "已结束"
-  elif [ "$eNum" = "2" ] ;then
+  elif [ "$dNum" = "2" ] ;then
   echo -e "
  ${GREEN} 1.落地机
  ${GREEN} 2.中转机
@@ -183,7 +183,7 @@ echo -e "是否为节点上ws加密:
   ehco "中转机监听端口为:"
   ehco ${port2}
   fi
-  elif [ "$eNum" = "3" ] ;then
+  elif [ "$dNum" = "3" ] ;then
   if [[ "$EUID" -ne 0 ]]; then
     echo "false"
   else
@@ -215,11 +215,11 @@ apt-get purge ufw
   else
     exit 1
   fi
-  elif [ "$eNum" = "4" ] ;then
+  elif [ "$dNum" = "4" ] ;then
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/killbyport.sh" && chmod +x fgcloud.sh
 cd ~/.bashrc
 export PATH=$PATH:~/bin
-elif [ "$eNum" = "5" ] ;then
+elif [ "$dNum" = "5" ] ;then
 echo -e "
  ${GREEN} 1.更改ssr端口
  ${GREEN} 2.启动ssr
