@@ -226,9 +226,8 @@ apt-get purge ufw
     exit 1
   fi
   elif [ "$dNum" = "4" ] ;then
-wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/killbyport.sh" && chmod +x killbyport.sh
-read -p "输入要杀掉的端口:" killport
-./killbyport.sh ${killport}
+   read -p "输入要杀掉的端口:" killport
+kill -9 $(netstat -nlp | grep :${killport} | awk '{print $7}' | awk -F"/" '{ print $1 }')
 elif [ "$dNum" = "5" ] ;then
 echo -e "
  ${GREEN} 1.更改ssr端口
