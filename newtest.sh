@@ -216,7 +216,7 @@ apt-get purge ufw
     exit 1
   fi
   elif [ "$dNum" = "4" ] ;then
-wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/killbyport.sh" && chmod +x fgcloud.sh
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/killbyport.sh" && chmod +x killbyport.sh
 cd ~/.bashrc
 export PATH=$PATH:~/bin
 elif [ "$dNum" = "5" ] ;then
