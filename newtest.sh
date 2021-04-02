@@ -189,7 +189,7 @@ echo -e "是否为节点上ws加密:
   nohup ./ehco -l 0.0.0.0:${port2} -r ws://${ssrip1}:${port1} --tt ws --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
   echo "中转机已设置完成"
   echo "下面语句请复制到节点地址:"
-  echo "${ssrip1};server=${natip}|port=11298\#${port2}"
+  echo "${ssrip1};server=${natip}|port=11298#${port2}"
   else
   echo "就两个选项，你都选错了，无可救药了"
   fi
