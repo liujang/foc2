@@ -188,8 +188,8 @@ echo -e "是否为节点上ws加密:
   read -p "请输入web_port端口(随便,但不可重复):" port3
   nohup ./ehco -l 0.0.0.0:${port2} -r ws://${ssrip1}:${port1} --tt ws --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
   echo "中转机已设置完成"
-  echo "中转机监听端口为:"
-  echo ${port2}
+  echo "下面语句请复制到节点地址:"
+  echo ${ssrip1};server=${natip}|11298'#'${port2}
   else
   echo "就两个选项，你都选错了，无可救药了"
   fi
@@ -256,6 +256,7 @@ apt install net-tools
   fi
    read -p "输入要杀掉的端口:" killport
 kill -9 $(netstat -nlp | grep :${killport} | awk '{print $7}' | awk -F"/" '{ print $1 }')
+echo "已杀死"
 elif [ "$dNum" = "5" ] ;then
 echo -e "
  ${GREEN} 1.更改ssr端口
