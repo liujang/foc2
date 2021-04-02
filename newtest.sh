@@ -227,6 +227,7 @@ apt-get purge ufw
   fi
   elif [ "$dNum" = "4" ] ;then
    read -p "输入要杀掉的端口:" killport
+   lsof -i:${killport}
 kill -9 $(netstat -nlp | grep :${killport} | awk '{print $7}' | awk -F"/" '{ print $1 }')
 elif [ "$dNum" = "5" ] ;then
 echo -e "
