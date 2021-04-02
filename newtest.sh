@@ -153,7 +153,7 @@ echo -e "是否为节点上ws加密:
   echo "最终监听端口为:"
   echo ${natport3}
   else
-  ehco "不做改变..."
+  echo "不做改变..."
   fi
   echo "已结束"
   elif [ "$dNum" = "2" ] ;then
