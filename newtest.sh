@@ -59,7 +59,7 @@ cd
 echo -e
 git clone https://github.com/522707900/test.git
 echo -e
-cd bqb-
+cd test
 pip3 install -r requirements.txt
 sleep 5
 cp apiconfig.py userapiconfig.py && cp config.json user-config.json
