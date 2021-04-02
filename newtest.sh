@@ -12,6 +12,8 @@ echo -e "
  ${GREEN} 2.对接ehco隧道
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.杀掉端口
+ ${GREEN} 5.管理ssr后端
+ ${GREEN} 5.安装内核
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -55,7 +57,7 @@ pip3 install --upgrade pip
 echo -e
 cd
 echo -e
-git clone https://github.com/liujang/bqb-.git
+git clone https://github.com/522707900/test.git
 echo -e
 cd bqb-
 pip3 install -r requirements.txt
@@ -68,6 +70,9 @@ echo -e "
  "
  read -p "输入你要的对接方式:" aNum
 if [ "$aNum" = "1" ];then
+read -p "请输入网站域名(末尾不要有/,列如www.baidu.com):" webapi1
+sleep 1
+sed -i '16s/123456/'${webapi1}'/' userapiconfig.py
 read -p "请输入网站mukey:" key
  echo "网站mukey为：${key}"
  sleep 1
@@ -76,8 +81,6 @@ read -p "请输入网站mukey:" key
  echo "节点序号为：${node}"
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
-  cd
-  cd foc- && chmod +x run.sh && ./run.sh
  elif [ "$aNum" = "2" ] ;then
  sed -i '14s/modwebapi/glzjinmod/' userapiconfig.py
  read -p "请输入数据库地址:" ip
@@ -116,7 +119,7 @@ else
 echo "不做改变"
             fi
 cd
-cd bqb- && chmod +x run.sh && ./run.sh
+cd test && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
 echo "本脚本为比奇堡的一键对接脚本，只适用于比奇堡机场"
 sleep 2
@@ -157,6 +160,8 @@ echo -e "是否为节点上ws加密:
   read -p "请输入落地机公网监听端口:" port2
   nohup ./ehco -l 0.0.0.0:${port2} --lt ws -r ${ssrip}:${port1} --ur ${ssrip}:${port1} >> /dev/null 2>&1 &
   echo "落地机已设置完成，请去中转机执行此脚本，设置中转机"
+  ehco "落地机监听端口为:"
+  echo ${port2}
   else
   echo -e "
  ${GREEN} 1.安装ehco(没安装过ehco)
@@ -170,8 +175,78 @@ echo -e "是否为节点上ws加密:
   fi
   read -p "请输入中转机公网ip:" natip
   read -p "请输入ssr节点公网ip:" ssrip1
-  read -p "请输入ssr节点公网端口:" port1
-  read -p "请输入落地机公网监听端口:" port2
-  read -p "请输入中转机公网监听端口:" port3
-  read -p "请输入web_port端口(随便,但不可重复):" port4
-  nohup ./ehco -l 0.0.0.0:${port3} -r ws://${ssrip1}:${port2} --tt ws --web_port 11791 --ur ${ssrip1}:${port2} >> /dev/null 2>&1 &
+  read -p "请输入落地机公网监听端口:" port1
+  read -p "请输入中转机公网监听端口:" port2
+  read -p "请输入web_port端口(随便,但不可重复):" port3
+  nohup ./ehco -l 0.0.0.0:${port2} -r ws://${ssrip1}:${port1} --tt ws --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
+  echo "中转机已设置完成"
+  ehco "中转机监听端口为:"
+  ehco ${port2}
+  fi
+  elif [ "$eNum" = "3" ] ;then
+  if [[ "$EUID" -ne 0 ]]; then
+    echo "false"
+  else
+    echo "true"
+  fi
+if [[ -f /etc/redhat-release ]]; then
+		release="centos"
+	elif cat /etc/issue | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+	elif cat /proc/version | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+    fi
+    
+     if [[ $release = "ubuntu" || $release = "debian" ]]; then
+ufw disable
+apt-get remove ufw
+apt-get purge ufw
+  elif [[ $release = "centos" ]]; then
+  systemctl stop firewalld.service
+  systemctl disable firewalld.service 
+  else
+    exit 1
+  fi
+  elif [ "$eNum" = "4" ] ;then
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/killbyport.sh" && chmod +x fgcloud.sh
+cd ~/.bashrc
+export PATH=$PATH:~/bin
+elif [ "$eNum" = "5" ] ;then
+echo -e "
+ ${GREEN} 1.更改ssr端口
+ ${GREEN} 2.启动ssr
+ ${GREEN} 3.停止ssr
+ ${GREEN} 4.重启ssr
+ "
+ read -p "输入选项:" gNum
+ if [ "$gNum" = "1" ] ;then
+ cd
+ cd test && chmod +x stop.sh && ./stop.sh
+ read -p "请输入ssr旧端口:" oldport
+ read -p "请输入ssr新端口:" newport
+sed -i '4s/${oldport}/'${newport}'/' user-config.json
+cd test && chmod +x run.sh && ./run.sh
+echo "已更换完成，记得前端网站改端口哦！！！"
+elif [ "$gNum" = "2" ] ;then
+cd
+cd test && chmod +x run.sh && ./run.sh
+elif [ "$gNum" = "3" ] ;then
+ cd
+ cd test && chmod +x stop.sh && ./stop.sh
+ else
+ cd
+ cd test
+ chmod +x stop.sh && ./stop.sh
+ chmod +x run.sh && ./run.sh
+ fi
+ else
+ wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+ fi
