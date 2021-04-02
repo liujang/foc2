@@ -163,7 +163,7 @@ echo -e "是否为节点上ws加密:
   echo "落地机已设置完成，请去中转机执行此脚本，设置中转机"
   ehco "落地机监听端口为:"
   echo ${port2}
-  else
+  elif [ "$eNum" = "2" ] ;then
   echo -e "
  ${GREEN} 1.安装ehco(没安装过ehco)
  ${GREEN} 2.不安装ehco(安装过ehco)
@@ -183,6 +183,8 @@ echo -e "是否为节点上ws加密:
   echo "中转机已设置完成"
   ehco "中转机监听端口为:"
   ehco ${port2}
+  else
+  echo "就两个选项，你都选错了，无可救药了"
   fi
   elif [ "$dNum" = "3" ] ;then
   if [[ "$EUID" -ne 0 ]]; then
