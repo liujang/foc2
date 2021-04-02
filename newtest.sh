@@ -154,6 +154,7 @@ echo -e "是否为节点上ws加密:
  ${GREEN} 1.落地机
  ${GREEN} 2.中转机
  "
+ read -p "输入你的选项:" eNum
  if [ "$eNum" = "1" ];then
   read -p "请输入ssr节点公网ip:" ssrip
   read -p "请输入ssr节点公网端口:" port1
