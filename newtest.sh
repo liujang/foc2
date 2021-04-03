@@ -114,7 +114,7 @@ read -p "请输入网站mukey:" key
  read -p "请输入选项:" cNum
 if [ "$cNum" = "1" ];then
 read -p "请输入nat端口:" natport
-sed -i '4s/11361/'${natport}'/' user-config.json
+sed -i '4s/11298/'${natport}'/' user-config.json
 else
 echo "不做改变"
             fi
