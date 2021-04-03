@@ -121,7 +121,6 @@ echo "不做改变"
 cd
 cd test && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
-echo "本脚本为比奇堡的一键对接脚本，只适用于比奇堡机场"
 sleep 2
 cd
 wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
