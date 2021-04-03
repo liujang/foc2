@@ -139,8 +139,8 @@ echo -e "是否为节点上ws加密:
   read -p "请输入节点机监听端口2:" ldport2
   read -p "请输入web_port端口(随便,但不可重复):" port3
   nohup ./ehco -l 0.0.0.0:${ldport2} -r ws://${ssrip}:${ldport1} --tt ws --web_port ${port3} --ur ${ssrip}:${ldport1} >> /dev/null 2>&1 &
-  echo "最终监听端口为:"
-  echo ${ldport2}
+  echo "请把下面语句复制到节点地址:"
+  echo "${ssrip};port=${ssrport1}#${ldport2}"
   elif [ "$bNum" = "2" ] ;then
   read -p "请输入nat节点公网ip:" natip
   read -p "请输入nat节点公网端口1:" natport1
@@ -148,9 +148,10 @@ echo -e "是否为节点上ws加密:
   nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
   read -p "请输入nat公网监听端口3:" natport3
   read -p "请输入web_port端口(随便,但不可重复):" port3
+  read -p "请输入承载节点端口:" czport
   nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
-  echo "最终监听端口为:"
-  echo ${natport3}
+  echo "请把下面语句复制到节点地址:"
+  echo "${natport1};port=${czport}#${natport3}"
   else
   echo "不做改变..."
   fi
