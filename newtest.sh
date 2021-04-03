@@ -148,10 +148,9 @@ echo -e "是否为节点上ws加密:
   nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
   read -p "请输入nat公网监听端口3:" natport3
   read -p "请输入web_port端口(随便,但不可重复):" port3
-  read -p "请输入承载节点端口:" czport
   nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
   echo "请把下面语句复制到节点地址:"
-  echo "${natport1};port=${czport}#${natport3}"
+  echo "${natport1};port=11298#${natport3}"
   else
   echo "不做改变..."
   fi
