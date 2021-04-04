@@ -14,6 +14,7 @@ echo -e "
  ${GREEN} 4.杀掉端口
  ${GREEN} 5.管理ssr后端
  ${GREEN} 6.安装内核
+ ${GREEN} 7.查看ehco端口
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -284,6 +285,8 @@ elif [ "$gNum" = "3" ] ;then
  chmod +x stop.sh && ./stop.sh
  chmod +x run.sh && ./run.sh
  fi
- else
+ elif [ "$dNum" = "6" ] ;then
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+ else
+ ps -aux | grep ehco
  fi
