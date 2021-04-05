@@ -124,7 +124,7 @@ cd bqb- && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
 sleep 2
 cd
-wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
+wget https://github.com/Ehco1996/ehco/releases/download/v1.0.4/ehco_1.0.4_linux_amd64 && mv ehco_1.0.4_linux_amd64 ehco && chmod +x ehco
 echo -e "是否为节点上ws加密:
   ${GREEN}1.是(以后要直连或流量转发的节点)
   ${GREEN}2.是(直连nat节点套ws,要隧道中转请选3)
@@ -177,7 +177,7 @@ echo -e "是否为节点上ws加密:
  "
  read -p "输入你的选项:" fNum
   if [ "$fNum" = "1" ];then
-  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.3/ehco_1.0.3_linux_amd64 && mv ehco_1.0.3_linux_amd64 ehco && chmod +x ehco
+  wget https://github.com/Ehco1996/ehco/releases/download/v1.0.4/ehco_1.0.4_linux_amd64 && mv ehco_1.0.4_linux_amd64 ehco && chmod +x ehco
   else
   echo "不做安装"
   fi
