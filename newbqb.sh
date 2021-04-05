@@ -135,21 +135,21 @@ echo -e "是否为节点上ws加密:
   read -p "请输入ssr公网ip:" ssrip
   read -p "请输入ssr公网端口:" ssrport1
   read -p "请输入节点机监听端口1:" ldport1
-  nohup ./ehco -l 0.0.0.0:${ldport1} --lt ws -r ${ssrip}:${ssrport1} --ur ${ssrip}:${ssrport1} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${ldport1} --lt mwss -r ${ssrip}:${ssrport1} --ur ${ssrip}:${ssrport1} >> /dev/null 2>&1 &
   sleep 1
   read -p "请输入节点机监听端口2:" ldport2
   read -p "请输入web_port端口(随便,但不可重复):" port3
-  nohup ./ehco -l 0.0.0.0:${ldport2} -r ws://${ssrip}:${ldport1} --tt ws --web_port ${port3} --ur ${ssrip}:${ldport1} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${ldport2} -r wss://${ssrip}:${ldport1} --tt mwss --web_port ${port3} --ur ${ssrip}:${ldport1} >> /dev/null 2>&1 &
   echo "请把下面语句复制到节点地址:"
   echo "${ssrip};port=${ssrport1}#${ldport2}"
   elif [ "$bNum" = "2" ] ;then
   read -p "请输入nat节点公网ip:" natip
   read -p "请输入nat节点公网端口1:" natport1
   read -p "请输入nat公网监听端口2:" natport2
-  nohup ./ehco -l 0.0.0.0:${natport2} --lt ws -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${natport2} --lt mwss -r ${natip}:${natport1} --ur ${natip}:${natport1} >> /dev/null 2>&1 &
   read -p "请输入nat公网监听端口3:" natport3
   read -p "请输入web_port端口(随便,但不可重复):" port3
-  nohup ./ehco -l 0.0.0.0:${natport3} -r ws://${natip}:${natport2} --tt ws --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${natport3} -r wss://${natip}:${natport2} --tt mwss --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
   echo "请把下面语句复制到节点地址:"
   echo "${natport1};port=11361#${natport3}"
   else
@@ -166,7 +166,7 @@ echo -e "是否为节点上ws加密:
   read -p "请输入ssr节点公网ip:" ssrip
   read -p "请输入ssr节点公网端口:" port1
   read -p "请输入落地机公网监听端口:" port2
-  nohup ./ehco -l 0.0.0.0:${port2} --lt ws -r ${ssrip}:${port1} --ur ${ssrip}:${port1} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${port2} --lt mwss -r ${ssrip}:${port1} --ur ${ssrip}:${port1} >> /dev/null 2>&1 &
   echo "落地机已设置完成，请去中转机执行此脚本，设置中转机"
   echo "落地机监听端口为:"
   echo ${port2}
@@ -186,7 +186,7 @@ echo -e "是否为节点上ws加密:
   read -p "请输入落地机公网监听端口:" port1
   read -p "请输入中转机公网监听端口:" port2
   read -p "请输入web_port端口(随便,但不可重复):" port3
-  nohup ./ehco -l 0.0.0.0:${port2} -r ws://${ssrip1}:${port1} --tt ws --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
+  nohup ./ehco -l 0.0.0.0:${port2} -r wss://${ssrip1}:${port1} --tt mwss --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
   echo "中转机已设置完成"
   echo "下面语句请复制到节点地址:"
   echo "${ssrip1};server=${natip}|port=11361#${port2}"
