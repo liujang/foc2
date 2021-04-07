@@ -15,6 +15,7 @@ echo -e "
  ${GREEN} 5.管理ssr后端
  ${GREEN} 6.安装内核
  ${GREEN} 7.查看ehco端口
+ ${GREEN} 8.管理caddy
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
