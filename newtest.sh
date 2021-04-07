@@ -83,8 +83,11 @@ ${nodeym}:80 {
 ${nodeym}:443 {
     redir https://${nodeym}:11298{uri}
 }" > /etc/caddy/Caddyfile
-cd && cd /etc/caddy/
-caddy start
+cd
+systemctl daemon-reload
+systemctl enable caddy
+systemctl start caddy
+systemctl status caddy
 sleep 3
 cd
 git clone https://github.com/522707900/test.git
