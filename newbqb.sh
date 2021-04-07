@@ -50,7 +50,7 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
-    apt install -y debian-keyring debian-archive-keyring apt-transport-https -y
+    apt install debian-keyring debian-archive-keyring apt-transport-https -y
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
     apt-get update -y
