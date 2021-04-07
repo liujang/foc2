@@ -85,8 +85,8 @@ ${nodeym}:443 {
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 caddy start
-echo -e
 sleep 3
+echo -e
 cd
 git clone https://github.com/522707900/test.git
 echo -e
