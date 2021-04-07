@@ -15,6 +15,7 @@ echo -e "
  ${GREEN} 5.管理ssr后端
  ${GREEN} 6.安装内核
  ${GREEN} 7.查看ehco端口
+ ${GREEN} 8.管理caddy
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -314,6 +315,30 @@ elif [ "$gNum" = "3" ] ;then
  fi
  elif [ "$dNum" = "6" ] ;then
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
- else
+elif [ "$dNum" = "7" ] ;then
  ps -aux | grep ehco
+ else
+ echo -e "
+ ${GREEN} 1.启动caddy
+ ${GREEN} 2.停止caddy
+ ${GREEN} 3.重启caddy
+ "
+ read -p "请输入选项:" caddyxx
+ if [ "$caddyxx" = "1" ] ;then
+cd && cd /etc/caddy/
+caddy start
+sleep 3
+echo -e
+ elif [ "$caddyxx" = "2" ] ;then
+ cd && cd /etc/caddy/
+ caddy stop
+ echo -e
+ else 
+ cd && cd /etc/caddy/
+  caddy stop
+ echo -e
+ caddy start
+sleep 3
+echo -e
+ fi
  fi
