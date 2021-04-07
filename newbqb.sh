@@ -82,6 +82,7 @@ ${nodeym}:443 {
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 caddy start
+echo -e
 sleep 3
 cd
 git clone https://github.com/liujang/bqb-.git
