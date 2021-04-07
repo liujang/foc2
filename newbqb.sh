@@ -8,7 +8,7 @@ echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~
 source ~/.bashrc
 sleep 2
 echo -e "
- ${GREEN} 1.对接ssr节点
+ ${GREEN} 1.对接ssr节点(caddy tls)
  ${GREEN} 2.对接ehco隧道
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.杀掉端口
@@ -50,14 +50,40 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
+    apt install -y debian-keyring debian-archive-keyring apt-transport-https
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
+    apt update
+    apt install caddy
 elif [ $PM = 'yum' ]; then
     yum update -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
+    yum install yum-plugin-copr
+    yum copr enable @caddy/caddy
+    yum install caddy
 fi
 pip3 install --upgrade pip
 echo -e
 cd
-echo -e
+mkdir /var/www && cd /var/www/
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
+cd
+read -p "输入域名:" nodeym
+echo "https://${nodeym}:15973 {
+    root * /var/www
+    file_server
+    tls 2895174879@qq.com
+}
+${nodeym}:80 {
+    redir https://${nodeym}:11361{uri}
+}
+${nodeym}:443 {
+    redir https://${nodeym}:11361{uri}
+}" > /etc/caddy/Caddyfile
+cd && cd /etc/caddy/
+caddy start
+sleep 3
+cd
 git clone https://github.com/liujang/bqb-.git
 echo -e
 cd bqb-
