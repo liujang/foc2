@@ -65,8 +65,6 @@ elif [ $PM = 'yum' ]; then
     yum copr enable @caddy/caddy -y
     yum install caddy -y
 fi
-pip3 install --upgrade pip
-echo -e
 cd
 pip3 install --upgrade pip
 echo -e
