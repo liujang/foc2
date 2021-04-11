@@ -70,29 +70,6 @@ echo -e
 cd
 pip3 install --upgrade pip
 echo -e
-cd
-mkdir /var/www && cd /var/www/
-wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
-cd
-read -p "输入域名:" nodeym
-echo "https://${nodeym}:15973 {
-    root * /var/www
-    file_server
-    tls 2895174879@qq.com
-}
-${nodeym}:80 {
-    redir https://${nodeym}:11298{uri}
-}
-${nodeym}:443 {
-    redir https://${nodeym}:11298{uri}
-}" > /etc/caddy/Caddyfile
-cd && cd /etc/caddy/
-kill -9 $(netstat -nlp | grep :2019 | awk '{print $7}' | awk -F"/" '{ print $1 }')
-sleep 2
-caddy start
-sleep 3
-echo -e
-cd
 git clone https://github.com/522707900/test.git
 echo -e
 cd test
@@ -156,6 +133,29 @@ echo "不做改变"
             fi
 cd
 cd test && chmod +x run.sh && ./run.sh
+cd
+mkdir /var/www && cd /var/www/
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
+cd
+read -p "输入域名:" nodeym
+echo "https://${nodeym}:15973 {
+    root * /var/www
+    file_server
+    tls 2895174879@qq.com
+}
+${nodeym}:80 {
+    redir https://${nodeym}:11298{uri}
+}
+${nodeym}:443 {
+    redir https://${nodeym}:11298{uri}
+}" > /etc/caddy/Caddyfile
+cd && cd /etc/caddy/
+caddy stop
+sleep 2
+caddy start
+sleep 3
+echo -e
+cd
 echo "已经对接完成！！!。"
 sleep 2
 cd
