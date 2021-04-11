@@ -51,6 +51,7 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
+    apt install net-tools -y
     apt install debian-keyring debian-archive-keyring apt-transport-https -y
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
@@ -58,10 +59,11 @@ if [[ -f /etc/redhat-release ]]; then
     apt install caddy -y
 elif [ $PM = 'yum' ]; then
     yum update -y
+    yum install net-tools -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
     yum install yum-plugin-copr -y
     yum copr enable @caddy/caddy -y
-    yum install caddy -y
+    yum install caddy -y 
 fi
 pip3 install --upgrade pip
 echo -e
@@ -82,7 +84,8 @@ ${nodeym}:443 {
     redir https://${nodeym}:11361{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
-caddy start
+kill -9 $(netstat -nlp | grep :2019 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+caddy stop && caddy start
 sleep 3
 echo -e
 cd
@@ -276,9 +279,9 @@ if [[ -f /etc/redhat-release ]]; then
     fi
     
      if [[ $release = "ubuntu" || $release = "debian" ]]; then
-apt install net-tools
+apt install net-tools -y
   elif [[ $release = "centos" ]]; then
-  yum install net-tools
+  yum install net-tools -y
   else
     exit 1
   fi
