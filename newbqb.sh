@@ -187,6 +187,7 @@ cd && cd /etc/caddy/
 caddy stop
 sleep 2
 caddy start
+sleep 10
 echo -e
 cd
   elif [ "$dNum" = "2" ] ;then
