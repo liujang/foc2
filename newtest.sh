@@ -88,7 +88,8 @@ ${nodeym}:443 {
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 kill -9 $(netstat -nlp | grep :2019 | awk '{print $7}' | awk -F"/" '{ print $1 }')
-caddy stop && caddy start
+sleep 2
+caddy start
 sleep 3
 echo -e
 cd
