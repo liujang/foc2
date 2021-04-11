@@ -84,7 +84,7 @@ ${nodeym}:443 {
     redir https://${nodeym}:11361{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
-kill -9 $(netstat -nlp | grep :2019 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+caddy stop
 sleep 2 
 caddy start
 sleep 3
