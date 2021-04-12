@@ -8,13 +8,14 @@ echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~
 source ~/.bashrc
 sleep 2
 echo -e "
- ${GREEN} 1.对接ssr节点
+ ${GREEN} 1.对接ssr节点(caddy tls)
  ${GREEN} 2.对接ehco隧道
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.杀掉端口
  ${GREEN} 5.管理ssr后端
  ${GREEN} 6.安装内核
  ${GREEN} 7.查看ehco端口
+ ${GREEN} 8.管理caddy
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -50,13 +51,22 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
+    apt install net-tools -y
+    apt install debian-keyring debian-archive-keyring apt-transport-https -y
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
+    apt-get update -y
+    apt install caddy -y
 elif [ $PM = 'yum' ]; then
     yum update -y
+    yum install net-tools -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
+    yum install yum-plugin-copr -y
+    yum copr enable @caddy/caddy -y
+    yum install caddy -y 
 fi
-pip3 install --upgrade pip
-echo -e
 cd
+pip3 install --upgrade pip
 echo -e
 git clone https://github.com/zhj18/fgcloud.git
 echo -e
@@ -116,6 +126,7 @@ read -p "请输入网站mukey:" key
 if [ "$cNum" = "1" ];then
 read -p "请输入nat端口:" natport
 sed -i '4s/22783/'${natport}'/' user-config.json
+sed -i '22s/22783/'${natport}'/' user-config.json
 else
 echo "不做改变"
             fi
@@ -156,6 +167,29 @@ echo -e "是否为节点上mwss加密:
   echo "不做改变..."
   fi
   echo "已结束"
+  cd
+mkdir /var/www && cd /var/www/
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
+cd
+read -p "输入域名:" nodeym
+echo "https://${nodeym}:15973 {
+    root * /var/www
+    file_server
+    tls 2895174879@qq.com
+}
+${nodeym}:80 {
+    redir https://${nodeym}:22783{uri}
+}
+${nodeym}:443 {
+    redir https://${nodeym}:22783{uri}
+}" > /etc/caddy/Caddyfile
+cd && cd /etc/caddy/
+caddy stop
+sleep 2
+caddy start
+sleep 10
+echo -e
+cd
   elif [ "$dNum" = "2" ] ;then
   echo -e "
  ${GREEN} 1.落地机
@@ -248,9 +282,9 @@ if [[ -f /etc/redhat-release ]]; then
     fi
     
      if [[ $release = "ubuntu" || $release = "debian" ]]; then
-apt install net-tools
+apt install net-tools -y
   elif [[ $release = "centos" ]]; then
-  yum install net-tools
+  yum install net-tools -y
   else
     exit 1
   fi
@@ -287,6 +321,30 @@ elif [ "$gNum" = "3" ] ;then
  fi
  elif [ "$dNum" = "6" ] ;then
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
- else
+elif [ "$dNum" = "7" ] ;then
  ps -aux | grep ehco
+ else
+ echo -e "
+ ${GREEN} 1.启动caddy
+ ${GREEN} 2.停止caddy
+ ${GREEN} 3.重启caddy
+ "
+ read -p "请输入选项:" caddyxx
+ if [ "$caddyxx" = "1" ] ;then
+cd && cd /etc/caddy/
+caddy start
+sleep 3
+echo -e
+ elif [ "$caddyxx" = "2" ] ;then
+ cd && cd /etc/caddy/
+ caddy stop
+ echo -e
+ else 
+ cd && cd /etc/caddy/
+  caddy stop
+ echo -e
+ caddy start
+sleep 3
+echo -e
+ fi
  fi
