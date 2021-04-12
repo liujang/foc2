@@ -178,10 +178,10 @@ echo "https://${nodeym}:15973 {
     tls 2895174879@qq.com
 }
 ${nodeym}:80 {
-    redir https://${nodeym}:11298{uri}
+    redir https://${nodeym}:11361{uri}
 }
 ${nodeym}:443 {
-    redir https://${nodeym}:11298{uri}
+    redir https://${nodeym}:11361{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 caddy stop
