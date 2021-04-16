@@ -53,6 +53,15 @@ cd chtssrhd
 pip3 install -r requirements.txt
 sleep 3
 cp apiconfig.py userapiconfig.py && cp config.json user-config.json
+echo -e
+read -p "请输入后端多少小时测速一次(默认720小时，一个月):" speedtestnum
+ [ -z "${speedtestnum}" ] && speedtestnum=720
+    echo
+    echo "---------------------------"
+    echo "speedtestnum = ${speedtestnum}"
+    echo "---------------------------"
+    sed -i '5s/6/'${speedtestnum}'/' userapiconfig.py
+    echo
 echo -e "
  ${GREEN} 1.web
  ${GREEN} 2.db
