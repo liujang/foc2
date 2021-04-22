@@ -58,6 +58,7 @@ if [[ -f /etc/redhat-release ]]; then
     apt update -y
     apt install caddy -y
 elif [ $PM = 'yum' ]; then
+    systemctl stop initial-setup-text 
     yum update -y
     yum install net-tools -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
