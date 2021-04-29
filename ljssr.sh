@@ -85,4 +85,22 @@ wget --no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.
 chmod +x shadowsocks-all.sh
 ./shadowsocks-all.sh 2>&1 | tee shadowsocks-all.log
 cd /etc/shadowsocks-r
-sed -i '25s/ss/'${ssrport}'/' config.json
+echo "{
+    "server":"0.0.0.0",
+    "server_ipv6":"::",
+    "server_port":{ssrport},
+    "local_address":"127.0.0.1",
+    "local_port":1080,
+    "password":"ljfxz",
+    "timeout":120,
+    "method":"none",
+    "protocol":"auth_aes128_sha1",
+    "protocol_param":"",
+    "obfs":"plain",
+    "obfs_param":"",
+    "redirect":["*:{ssrport}#127.0.0.1:15973"],
+    "dns_ipv6":false,
+    "fast_open":false,
+    "workers":1
+}" > /etc/shadowsocks-r/config.json
+/etc/init.d/shadowsocks-r restart
