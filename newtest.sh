@@ -51,6 +51,8 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
+    rm -rf /usr/bin/python
+    ln -s /usr/bin/python3  /usr/bin/python
     apt install net-tools -y
     apt install debian-keyring debian-archive-keyring apt-transport-https -y
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
@@ -62,7 +64,9 @@ elif [ $PM = 'yum' ]; then
     systemctl stop initial-setup-text
     yum install net-tools -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
-     yum install yum-plugin-copr -y
+    rm -rf /usr/bin/python
+    ln -s /usr/bin/python3  /usr/bin/python
+    yum install yum-plugin-copr -y
     yum copr enable @caddy/caddy -y
     yum install caddy -y
 fi
