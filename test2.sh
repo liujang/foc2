@@ -96,6 +96,8 @@ read -p "请输入网站mukey:" key
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
   cd
+rm -rf /usr/bin/python
+ln -s /usr/bin/python3  /usr/bin/python
   cd test2 && chmod +x run.sh && ./run.sh
  elif [ "$aNum" = "2" ] ;then
  sed -i '14s/modwebapi/glzjinmod/' userapiconfig.py
