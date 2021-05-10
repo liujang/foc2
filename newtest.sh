@@ -51,6 +51,8 @@ if [[ -f /etc/redhat-release ]]; then
   if [ $PM = 'apt' ] ; then
     apt-get update -y
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
+    apt-get install -y cron
+    service cron start
     apt install net-tools -y
     apt install debian-keyring debian-archive-keyring apt-transport-https -y
     curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
@@ -62,6 +64,9 @@ elif [ $PM = 'yum' ]; then
     systemctl stop initial-setup-text
     yum install net-tools -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
+    yum install -y vixie-cron
+    yum install -y crontabs
+    service cron start
     yum install yum-plugin-copr -y
     yum copr enable @caddy/caddy -y
     yum install caddy -y
@@ -203,6 +208,13 @@ caddy start
 sleep 10
 echo -e
 cd
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/caddy.sh" && chmod +x caddy.sh
+crontab -l > conf
+echo "@reboot ./test/run.sh" >> conf
+echo "@reboot ./caddy.sh" >> conf
+crontab conf
+rm -f conf
+echo "已设置开机自动运行后端和caddy"
   elif [ "$dNum" = "2" ] ;then
   echo -e "
  ${GREEN} 1.落地机
