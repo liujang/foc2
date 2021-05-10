@@ -46,9 +46,14 @@ if [[ -f /etc/redhat-release ]]; then
     ./configure && make -j2 && make install
     echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
     ldconfig
+    apt-get install -y cron
+    service cron start
 elif [ $PM = 'yum' ]; then
     yum update -y
     yum install vim curl git wget zip unzip python3 python3-pip git -y
+    yum install -y vixie-cron
+    yum install -y crontabs
+    service cron start
     timedatectl set-timezone Asia/Shanghai
     yum -y groupinstall "Development Tools"
     wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gz
@@ -141,3 +146,9 @@ rm -rf /usr/bin/python
 ln -s /usr/bin/python3  /usr/bin/python
 cd test2 && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
+cd
+crontab -l > conf
+echo "@reboot ./test2/run.sh" >> conf
+crontab conf
+rm -f conf
+echo "已设置开机自动运行后端"
