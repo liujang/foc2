@@ -152,3 +152,20 @@ echo "@reboot ./test2/run.sh" >> conf
 crontab conf
 rm -f conf
 echo "已设置开机自动运行后端"
+echo -e "
+ ${GREEN} 1.设置ssr定时重启
+ ${GREEN} 2.不设置ssr定时重启
+ "
+ read -p "输入选项:" ssrNum
+if [ "$ssrNum" = "1" ];then
+cd
+read -p "多少小时重启一次后端:" ssrtime
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/cqtest2.sh" && chmod +x cqtest2.sh
+crontab -l > conf
+echo "0 */${ssrtime} * * * ./cqtest2.sh" >> conf
+crontab conf
+rm -f conf
+echo "已设置每${ssrtime}小时重启一次后端"
+else
+echo "已跳过"
+fi
