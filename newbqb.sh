@@ -322,6 +322,7 @@ echo -e "
  ${GREEN} 2.启动ssr
  ${GREEN} 3.停止ssr
  ${GREEN} 4.重启ssr
+ ${GREEN} 5.设置ssr定时重启时间
  "
  read -p "输入选项:" gNum
  if [ "$gNum" = "1" ] ;then
@@ -338,11 +339,20 @@ cd bqb- && chmod +x run.sh && ./run.sh
 elif [ "$gNum" = "3" ] ;then
  cd
  cd bqb- && chmod +x stop.sh && ./stop.sh
- else
+elif [ "$gNum" = "4" ] ;then
  cd
  cd bqb-
  chmod +x stop.sh && ./stop.sh
  chmod +x run.sh && ./run.sh
+ else
+cd
+read -p "多少小时重启一次后端:" ssrtime
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/cqbqb-.sh" && chmod +x cqbqb-.sh
+crontab -l > conf
+echo "0 */${ssrtime} * * * ./cq.sh" >> conf
+crontab conf
+rm -f conf
+echo "已设置每${ssrtime}小时重启一次后端"
  fi
  elif [ "$dNum" = "6" ] ;then
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
