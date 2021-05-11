@@ -349,7 +349,7 @@ elif [ "$gNum" = "3" ] ;then
 read -p "多少小时重启一次后端:" ssrtime
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/cqfgcloud.sh" && chmod +x cqfgcloud.sh
 crontab -l > conf
-echo "0 */${ssrtime} * * * ./cq.sh" >> conf
+echo "0 */${ssrtime} * * * ./cqfgcloud.sh" >> conf
 crontab conf
 rm -f conf
 echo "已设置每${ssrtime}小时重启一次后端"
