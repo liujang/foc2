@@ -7,7 +7,7 @@ FUCHSIA="\033[0;35m"
 echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 cd test
-sed -i '23s/164.155.77.134/'www.jingdouyun.space'/' userapiconfig.py
+sed -i '23s/www.jingdouyun.space/'jdy.jingdouyun.space'/' userapiconfig.py
 ./stop.sh
 ./run.sh
 echo "成功"
