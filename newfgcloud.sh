@@ -71,7 +71,9 @@ elif [ $PM = 'yum' ]; then
     yum copr enable @caddy/caddy -y
     yum install caddy -y 
     sed -i '1s/python/'python2'/' /bin/yum
+    sed -i '1s/python22/'python2'/' /bin/yum
     sed -i '1s/python/'python2'/' /usr/libexec/urlgrabber-ext-down
+    sed -i '1s/python22/'python2'/' /usr/libexec/urlgrabber-ext-down
 fi
 cd
 pip3 install --upgrade pip
