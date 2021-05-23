@@ -62,7 +62,9 @@ elif [ $PM = 'yum' ]; then
     echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
     ldconfig
     sed -i '1s/python/'python2'/' /bin/yum
+    sed -i '1s/python22/'python2'/' /bin/yum
     sed -i '1s/python/'python2'/' /usr/libexec/urlgrabber-ext-down
+    sed -i '1s/python22/'python2'/' /usr/libexec/urlgrabber-ext-down
 fi
 pip3 install --upgrade pip
 echo -e
