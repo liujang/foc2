@@ -199,9 +199,8 @@ ${nodeym}:443 {
 }" > /usr/local/caddy/Caddyfile
 cd ../
 caddy
+echo -e '\003'
 nohup caddy &
-send "\03" 
-cd
 echo -e
 cd
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/caddy.sh" && chmod +x caddy.sh
