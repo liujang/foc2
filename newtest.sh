@@ -198,7 +198,7 @@ ${nodeym}:443 {
     redir https://${nodeym}:11298{uri}
 }" > /usr/local/caddy/Caddyfile
 cd ../
-caddy -y
+caddy
 nohup caddy &
 send "\03" 
 cd
