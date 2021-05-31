@@ -187,7 +187,7 @@ wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/m
 cd
 read -p "输入域名:" nodeym
 echo "https://${nodeym}:15973 {
-    root /usr/local/caddy/www/
+    root /usr/local/caddy/www
     timeouts none
     tls 2895174879@qq.com
 }
@@ -196,7 +196,7 @@ ${nodeym}:80 {
 }
 ${nodeym}:443 {
     redir https://${nodeym}:11298{uri}
-}" > /etc/caddy/Caddyfile
+}" > /usr/local/caddy/Caddyfile
 cd ../
 caddy -y
 nohup caddy &
