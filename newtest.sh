@@ -54,6 +54,11 @@ if [[ -f /etc/redhat-release ]]; then
     apt-get install -y cron
     service cron start
     apt install net-tools -y
+    apt install debian-keyring debian-archive-keyring apt-transport-https -y
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
+    apt-get update -y
+    apt install caddy -y
 elif [ $PM = 'yum' ]; then
     yum update -y
     systemctl stop initial-setup-text
@@ -62,13 +67,14 @@ elif [ $PM = 'yum' ]; then
     yum install -y vixie-cron
     yum install -y crontabs
     service cron start
+    yum install yum-plugin-copr -y
+    yum copr enable @caddy/caddy -y
+    yum install caddy -y
     sed -i '1s/python/'python2'/' /bin/yum
     sed -i '1s/python22/'python2'/' /bin/yum
     sed -i '1s/python/'python2'/' /usr/libexec/urlgrabber-ext-down
     sed -i '1s/python22/'python2'/' /usr/libexec/urlgrabber-ext-down
 fi
-cd
-wget https://github.com/caddyserver/caddy/releases/download/v1.0.4/caddy_v1.0.4_linux_amd64.tar.gz && tar -xf caddy_v1.0.4_linux_amd64.tar.gz && mv caddy /usr/bin/
 cd
 pip3 install --upgrade pip
 echo -e
@@ -182,13 +188,13 @@ echo -e "是否为节点上mwss加密:
   fi
   echo "已结束"
   cd
-mkdir -p /usr/local/caddy/www/ && cd /usr/local/caddy/www/
+mkdir /var/www && cd /var/www/
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
 cd
 read -p "输入域名:" nodeym
 echo "https://${nodeym}:15973 {
-    root /usr/local/caddy/www
-    timeouts none
+    root * /var/www
+    file_server
     tls 2895174879@qq.com
 }
 ${nodeym}:80 {
@@ -196,14 +202,14 @@ ${nodeym}:80 {
 }
 ${nodeym}:443 {
     redir https://${nodeym}:11298{uri}
-}" > /usr/local/caddy/Caddyfile
-cd ../
-caddy
-echo -e
-nohup caddy &
+}" > /etc/caddy/Caddyfile
+cd && cd /etc/caddy/
+caddy stop
+sleep 2
+caddy start
+sleep 10
 echo -e
 cd
-echo -e
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/caddy.sh" && chmod +x caddy.sh
 crontab -l > conf
 echo "@reboot ./test/run.sh" >> conf
