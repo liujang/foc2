@@ -202,9 +202,6 @@ echo "https://${nodeym}:15973 {
 }
 ${nodeym}:80 {
     redir https://${nodeym}:11298{uri}
-}
-${nodeym}:443 {
-    redir https://${nodeym}:11298{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 sleep 2
