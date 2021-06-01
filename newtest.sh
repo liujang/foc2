@@ -207,7 +207,6 @@ ${nodeym}:443 {
     redir https://${nodeym}:11298{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
-caddy stop
 sleep 2
 caddy start
 sleep 10
