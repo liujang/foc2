@@ -75,6 +75,9 @@ elif [ $PM = 'yum' ]; then
     sed -i '1s/python/'python2'/' /usr/libexec/urlgrabber-ext-down
     sed -i '1s/python22/'python2'/' /usr/libexec/urlgrabber-ext-down
 fi
+kill -9 $(netstat -nlp | grep :2019 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+kill -9 $(netstat -nlp | grep :80 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+kill -9 $(netstat -nlp | grep :443 | awk '{print $7}' | awk -F"/" '{ print $1 }')
 cd
 pip3 install --upgrade pip
 echo -e
