@@ -6,8 +6,8 @@ BLUE="\033[0;36m"
 FUCHSIA="\033[0;35m"
 echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
-cd test
-sed -i '23s/www.jingdouyun.space/'jdy.jingdouyun.space'/' userapiconfig.py
+cd fgcloud
+sed -i '23s/164.155.77.117/'sql.xxtoro.cf'/' userapiconfig.py
 ./stop.sh
 ./run.sh
 echo "成功"
