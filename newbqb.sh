@@ -329,8 +329,8 @@ echo -e "
  cd bqb- && chmod +x stop.sh && ./stop.sh
  read -p "请输入ssr旧端口:" oldport
  read -p "请输入ssr新端口:" newport
-sed -i '4s/${oldport}/'${newport}'/' user-config.json
-sed -i '22s/${oldport}/'${newport}'/' user-config.json
+sed -i '4s/'${oldport}'/'${newport}'/' user-config.json
+sed -i '22s/'${oldport}'/'${newport}'/' user-config.json
 chmod +x run.sh && ./run.sh
 echo "已更换完成，记得前端网站改端口哦！！！"
 elif [ "$gNum" = "2" ] ;then
