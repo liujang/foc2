@@ -7,8 +7,8 @@ FUCHSIA="\033[0;35m"
 echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 cd bqb-
-sed -i '11s/aes-256-ctr/'aes-256-cfb'/' user-config.json
-sed -i '12s/auth_aes128_sha1/'auth_aes128_md5'/' user-config.json
+sed -i '11s/aes-256-cfb/'none'/' user-config.json
+sed -i '12s/auth_aes128_md5/'auth_aes128_sha1'/' user-config.json
 ./stop.sh
 ./run.sh
 echo "成功"
