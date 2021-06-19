@@ -16,6 +16,7 @@ echo -e "
  ${GREEN} 6.安装内核
  ${GREEN} 7.查看ehco端口
  ${GREEN} 8.管理caddy
+ ${GREEN} 9.更新此脚本
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -363,7 +364,7 @@ echo "已设置每${ssrtime}小时重启一次后端"
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 elif [ "$dNum" = "7" ] ;then
  ps -aux | grep ehco
- else
+ elif [ "$dNum" = "7" ] ;then
  echo -e "
  ${GREEN} 1.启动caddy
  ${GREEN} 2.停止caddy
@@ -387,4 +388,7 @@ echo -e
 sleep 3
 echo -e
  fi
+ else
+ wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh && ./newbqb.sh
+ echo "更新脚本成功"
  fi
