@@ -389,6 +389,6 @@ sleep 3
 echo -e
  fi
  else
- wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh && ./newbqb.sh
+ wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh
  echo "更新脚本成功"
  fi
