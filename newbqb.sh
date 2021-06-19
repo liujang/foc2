@@ -364,7 +364,7 @@ echo "已设置每${ssrtime}小时重启一次后端"
  wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 elif [ "$dNum" = "7" ] ;then
  ps -aux | grep ehco
- elif [ "$dNum" = "7" ] ;then
+ elif [ "$dNum" = "8" ] ;then
  echo -e "
  ${GREEN} 1.启动caddy
  ${GREEN} 2.停止caddy
