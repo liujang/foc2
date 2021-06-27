@@ -17,7 +17,8 @@ echo -e "
  ${GREEN} 7.查看ehco端口
  ${GREEN} 8.管理caddy
  ${GREEN} 9.增加swap
- ${GREEN} 10.更新此脚本
+ ${GREEN} 10.更新ssh端口
+ ${GREEN} 11.更新此脚本
  "
 read -p "输入选项:" dNum
 if [ "$dNum" = "1" ];then
@@ -418,6 +419,61 @@ echo -e
 echo " ###########设置开机自启动############"
 echo '/mnt/swap swap swap defaults 0 0' >> /etc/fstab
 echo "All done！Thanks for using this shell script"
+elif [ "$dNum" = "10" ] ;then
+echo -e "
+ ${GREEN} 1.添加ssh新端口
+ ${GREEN} 2.禁用ssh旧端口
+ "
+ read -p "输入选项:" sshNum
+ if [ "$sshNum" = "1" ] ;then
+ if [[ "$EUID" -ne 0 ]]; then
+    echo "false"
+  else
+    echo "true"
+  fi
+if [[ -f /etc/redhat-release ]]; then
+		release="centos"
+	elif cat /etc/issue | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+	elif cat /proc/version | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+    fi
+    
+     if [[ $release = "ubuntu" || $release = "debian" ]]; then
+    PM='apt'
+  elif [[ $release = "centos" ]]; then
+    PM='yum'
+  else
+    exit 1
+  fi
+  # PM='apt'
+  if [ $PM = 'apt' ] ; then\
+echo "不用修改SELinux"
+read -p "请输入ssh新端口:" newsshport
+sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
+systemctl restart sshd.service
+elif [ $PM = 'yum' ]; then
+echo "进行SELinux修改"
+sed -i 's\SELINUX=enforcing\SELINUX=disabled\g' /etc/selinux/config
+read -p "请输入ssh新端口:" newsshport
+sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
+systemctl restart sshd.service
+ehco "3s后重启系统"
+sleep 3
+reboot
+ else
+ read -p "请输入ssh旧端口:" oldsshport
+ sed -i '13s/'oldsshport'/ljfxz/' /etc/ssh/sshd_config
+ fi
+ ehco "success"
  else
  wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh
  echo "更新脚本成功"
