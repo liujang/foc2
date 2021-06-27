@@ -466,14 +466,14 @@ sed -i 's\SELINUX=enforcing\SELINUX=disabled\g' /etc/selinux/config
 read -p "请输入ssh新端口:" newsshport
 sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
 systemctl restart sshd.service
-ehco "3s后重启系统"
+echo "3s后重启系统"
 sleep 3
 reboot
  else
  read -p "请输入ssh旧端口:" oldsshport
  sed -i '13s/'oldsshport'/ljfxz/' /etc/ssh/sshd_config
  fi
- ehco "success"
+ echo "success"
  else
  wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh
  echo "更新脚本成功"
