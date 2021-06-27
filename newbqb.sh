@@ -455,7 +455,7 @@ if [[ -f /etc/redhat-release ]]; then
     exit 1
   fi
   # PM='apt'
-  if [ $PM = 'apt' ] ; then\
+  if [ $PM = 'apt' ] ; then
 echo "不用修改SELinux"
 read -p "请输入ssh新端口:" newsshport
 sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
