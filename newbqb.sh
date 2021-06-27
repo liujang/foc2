@@ -469,6 +469,7 @@ systemctl restart sshd.service
 echo "3s后重启系统"
 sleep 3
 reboot
+fi
  else
  read -p "请输入ssh旧端口:" oldsshport
  sed -i '13s/'oldsshport'/ljfxz/' /etc/ssh/sshd_config
