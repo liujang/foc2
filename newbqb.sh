@@ -17,7 +17,7 @@ echo -e "
  ${GREEN} 7.查看ehco端口
  ${GREEN} 8.管理caddy
  ${GREEN} 9.增加swap
- ${GREEN} 10.更新ssh端口
+ ${GREEN} 10.更改ssh端口
  ${GREEN} 11.更新此脚本
  "
 read -p "输入选项:" dNum
