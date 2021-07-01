@@ -456,13 +456,17 @@ if [[ -f /etc/redhat-release ]]; then
   # PM='apt'
   if [ $PM = 'apt' ] ; then
 echo "不用修改SELinux"
+read -p "请输入ssh旧端口:" oldsshport
 read -p "请输入ssh新端口:" newsshport
+sed -i '13a\'port'\ '${oldsshport}'' /etc/ssh/sshd_config
 sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
 systemctl restart sshd.service
 elif [ $PM = 'yum' ]; then
 echo "进行SELinux修改"
 sed -i 's\SELINUX=enforcing\SELINUX=disabled\g' /etc/selinux/config
+read -p "请输入ssh旧端口:" oldsshport
 read -p "请输入ssh新端口:" newsshport
+sed -i '13a\'port'\ '${oldsshport}'' /etc/ssh/sshd_config
 sed -i '13a\'port'\ '${newsshport}'' /etc/ssh/sshd_config
 systemctl restart sshd.service
 echo "3s后重启系统"
