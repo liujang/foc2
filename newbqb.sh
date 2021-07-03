@@ -475,7 +475,7 @@ reboot
 fi
  else
  read -p "请输入ssh旧端口:" oldsshport
- sed -i '13s/'oldsshport'/ljfxz/' /etc/ssh/sshd_config
+ sed -i '15s/'oldsshport'/ljfxz/' /etc/ssh/sshd_config
  fi
  echo "success"
  else
