@@ -145,8 +145,8 @@ read -p "请输入网站mukey:" key
  read -p "请输入选项:" cNum
 if [ "$cNum" = "1" ];then
 read -p "请输入nat端口:" natport
-sed -i '4s/443/'${natport}'/' user-config.json
-sed -i '22s/443/'${natport}'/' user-config.json
+sed -i '4s/30001/'${natport}'/' user-config.json
+sed -i '22s/30001/'${natport}'/' user-config.json
 else
 echo "不做改变"
             fi
@@ -184,7 +184,7 @@ echo -e "是否为节点上wss加密:
   read -p "请输入web_port端口(随便,但不可重复):" port3
   nohup ./ehco -l 0.0.0.0:${natport3} -r wss://${natip}:${natport2} --tt wss --web_port ${port3} --ur ${natip}:${natport2} >> /dev/null 2>&1 &
   echo "请把下面语句复制到节点地址:"
-  echo "${natport1};port=443#${natport3}"
+  echo "${natport1};port=30001#${natport3}"
   else
   echo "不做改变..."
   fi
@@ -200,7 +200,7 @@ echo "https://${nodeym}:15973 {
     tls 2895174879@qq.com
 }
 ${nodeym}:80 {
-    redir https://${nodeym}:443{uri}
+    redir https://${nodeym}:30001{uri}
 }" > /etc/caddy/Caddyfile
 cd && cd /etc/caddy/
 caddy stop
@@ -249,7 +249,7 @@ wget https://github.com/Ehco1996/ehco/releases/download/v1.0.7/ehco_1.0.7_linux_
   nohup ./ehco -l 0.0.0.0:${port2} -r wss://${ssrip1}:${port1} --tt wss --web_port ${port3} --ur ${ssrip1}:${port1} >> /dev/null 2>&1 &
   echo "中转机已设置完成"
   echo "下面语句请复制到节点地址:"
-  echo "${ssrip1};server=${natip}|port=443#${port2}"
+  echo "${ssrip1};server=${natip}|port=30001#${port2}"
   else
   echo "就两个选项，你都选错了，无可救药了"
   fi
