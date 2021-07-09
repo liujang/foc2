@@ -479,6 +479,6 @@ fi
  fi
  echo "success"
  else
- wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/newbqb.sh" && chmod +x newbqb.sh
+ wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/GOPIP.sh" && chmod +x GOPIP.sh && ./GOPIP.sh
  echo "更新脚本成功"
  fi
