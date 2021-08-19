@@ -87,56 +87,17 @@ pip3 install -r requirements.txt
 sleep 5
 cp apiconfig.py userapiconfig.py && cp config.json user-config.json
 echo -e
-read -p "请输入后端多少小时测速一次(默认720小时，一个月):" speedtestnum
- [ -z "${speedtestnum}" ] && speedtestnum=720
-    echo
-    echo "---------------------------"
-    echo "speedtestnum = ${speedtestnum}"
-    echo "---------------------------"
-    sed -i '5s/6/'${speedtestnum}'/' userapiconfig.py
-    echo
-echo -e "
- ${GREEN} 1.web
- ${GREEN} 2.db
- "
- read -p "输入你要的对接方式:" aNum
-if [ "$aNum" = "1" ];then
 read -p "请输入网站域名(末尾不要有/,列如www.baidu.com):" webapi1
 sleep 1
-sed -i '16s/123456/'${webapi1}'/' userapiconfig.py
+sed -i '8s/123456/'${webapi1}'/' userapiconfig.py
 read -p "请输入网站mukey:" key
  echo "网站mukey为：${key}"
  sleep 1
- sed -i '17s/123/'${key}'/' userapiconfig.py
+ sed -i '9s/123/'${key}'/' userapiconfig.py
  read -p "请输入节点序号:" node
  echo "节点序号为：${node}"
  sleep 1
  sed -i '2s/0/'${node}'/' userapiconfig.py
- elif [ "$aNum" = "2" ] ;then
- sed -i '14s/modwebapi/glzjinmod/' userapiconfig.py
- read -p "请输入数据库地址:" ip
- echo "数据库地址为：${ip}"
- sleep 1
- sed -i '23s/127.0.0.1/'${ip}'/' userapiconfig.py
- read -p "请输入数据库用户名:" user
- echo "数据库用户名为：${user}"
- sleep 1
- sed -i '25s/ss/'${user}'/' userapiconfig.py
- read -p "请输入数据库名:" db
- echo "数据库名为：${db}"
- sleep 1
- sed -i '27s/shadowsocks/'${db}'/' userapiconfig.py
- read -p "请输入数据库密码:" passwd
- echo "数据库密码为：${passwd}"
- sleep 1
- sed -i '26s/ss/'${passwd}'/' userapiconfig.py
- read -p "请输入节点序号:" node
- echo "节点序号为：${node}"
- sleep 1
- sed -i '2s/0/'${node}'/' userapiconfig.py
-  else
-            echo "你他妈是猪吗，就两个数字给你选，你都选错，滚！！！"
-            fi
  echo "是否为nat对接"
  echo -e "
  ${GREEN} 1.是
