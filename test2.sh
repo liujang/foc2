@@ -41,8 +41,8 @@ if [[ -f /etc/redhat-release ]]; then
     apt-get install vim curl git wget zip unzip python3 python3-pip git -y
     apt-get install libsodium-dev -y
     apt-get install -y build-essential
-    wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gz
-    tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16
+    wget https://github.com/jedisct1/libsodium/releases/download/1.0.18/libsodium-1.0.18.tar.gz
+    tar xf libsodium-1.0.18.tar.gz && cd libsodium-1.0.18
     ./configure && make -j2 && make install
     echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
     ldconfig
