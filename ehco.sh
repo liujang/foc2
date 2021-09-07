@@ -46,7 +46,7 @@ InitialEhco() {
 	    mkdir $ehco_conf_dir
     fi
     if [ ! -e "/usr/bin/ehco" ]; then
-    	url="https://leo.moe/ehco/ehco_${ehco_version}_linux_$1"
+    	url="https://github.com/Ehco1996/ehco/releases/download/v${ehco_version}/ehco_${ehco_version}_linux_$1"
     	echo -e "${blue_prefix}[Info]${plain_prefix} 开始下载ehco文件..."
     	wget -O /usr/bin/ehco $url &> /dev/null
     	if [ $? -ne 0 ]; then
