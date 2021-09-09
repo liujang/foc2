@@ -113,7 +113,7 @@ echo "不做改变"
 cd
 rm -rf /usr/bin/python
 ln -s /usr/bin/python3  /usr/bin/python
-cd bqb- && chmod +x run.sh && ./run.sh
+cd ylyjs && chmod +x run.sh && ./run.sh
 echo "已经对接完成！！!。"
 sleep 2
 cd
@@ -171,7 +171,7 @@ echo -e
 cd
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/caddy.sh" && chmod +x caddy.sh
 crontab -l > conf
-echo "@reboot ./bqb-/run.sh" >> conf
+echo "@reboot ./ylyjs/run.sh" >> conf
 echo "@reboot ./caddy.sh" >> conf
 crontab conf
 rm -f conf
