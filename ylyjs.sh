@@ -153,7 +153,7 @@ echo -e "是否为节点上wss加密:
 mkdir /var/www && cd /var/www/
 wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
 cd
-read -p "输入域名:" nodeym
+read -p "输入节点域名:" nodeym
 echo "https://${nodeym}:15973 {
     root * /var/www
     file_server
