@@ -277,6 +277,7 @@ http {
 #		proxy      on;
 #	}
 #}" > /etc/nginx/nginx.conf
+systemctl restart nginx
 cd
 crontab -l > conf
 echo "@reboot ./GOPIP/run.sh" >> conf
