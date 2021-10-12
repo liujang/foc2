@@ -7,14 +7,14 @@ FUCHSIA="\033[0;35m"
 echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 echo -e "
- ${GREEN} 1.对接ssr节点(caddy tls)
+ ${GREEN} 1.对接ssr节点(nginx)
  ${GREEN} 2.对接ehco隧道
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.杀掉端口
  ${GREEN} 5.管理ssr后端
  ${GREEN} 6.安装内核
  ${GREEN} 7.查看ehco端口
- ${GREEN} 8.管理caddy
+ ${GREEN} 8.管理nginx
  ${GREEN} 9.增加swap
  ${GREEN} 10.更改ssh端口
  ${GREEN} 11.更新此脚本
@@ -56,11 +56,7 @@ if [[ -f /etc/redhat-release ]]; then
     apt install net-tools -y
     apt-get install -y cron
     service cron start
-    apt install debian-keyring debian-archive-keyring apt-transport-https -y
-    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -
-    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee -a /etc/apt/sources.list.d/caddy-stable.list
-    apt-get update -y
-    apt install caddy -y
+    apt install nginx
 elif [ $PM = 'yum' ]; then 
     yum update -y
     systemctl stop initial-setup-text
@@ -69,9 +65,8 @@ elif [ $PM = 'yum' ]; then
     yum install -y vixie-cron
     yum install -y crontabs
     service cron start
-    yum install yum-plugin-copr -y
-    yum copr enable @caddy/caddy -y
-    yum install caddy -y
+    yum install -y nginx 
+    yum install nginx-mod-stream
     sed -i '1s/python/'python2'/' /bin/yum
     sed -i '1s/python22/'python2'/' /bin/yum
     sed -i '1s/python/'python2'/' /usr/libexec/urlgrabber-ext-down
@@ -189,33 +184,105 @@ echo -e "是否为节点上wss加密:
   echo "不做改变..."
   fi
   echo "已结束"
-  cd
-mkdir /var/www && cd /var/www/
-wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/index.html" && chmod +x index.html
 cd
+bash <(curl -s -L git.io/dmSSL)
+cd
+rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
-echo "https://${nodeym}:15973 {
-    root * /var/www
-    file_server
-    tls 2895174879@qq.com
+echo "user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+events {
+	worker_connections 768;
+	# multi_accept on;
 }
-${nodeym}:80 {
-    redir https://${nodeym}:30001{uri}
-}" > /etc/caddy/Caddyfile
-cd && cd /etc/caddy/
-caddy stop
-sleep 2
-caddy start
-sleep 10
-echo -e
+stream {
+upstream tcp_proxy {
+        hash $remote_addr consistent;
+        server ${nodeym}:30001;   #B服务器域名
+        #下面的配置是负载均衡配置，可配置多个服务器，默认是轮询模式
+        #server yyy.herokuapp.con:443;   #c服务器域名
+    }
+    server {
+        listen 15973;
+        listen 15973 udp;
+        proxy_connect_timeout 1s;
+        proxy_timeout 60s;
+        proxy_pass tcp_proxy;
+        ssl_protocols       TLSv1.2 TLSv1.3;      # 设置使用的SSL协议版本
+        ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
+	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
+        ssl_session_cache   shared:SSL:10m;
+        ssl_session_timeout 10m;
+    }
+}
+http {
+	##
+	# Basic Settings
+	##
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+	# server_tokens off;
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+	##
+	# SSL Settings
+	##
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+	##
+	# Logging Settings
+	##
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+	##
+	# Gzip Settings
+	##
+	gzip on;
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+	##
+	# Virtual Host Configs
+	##
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+# 
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+# 
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+# 
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}" > /etc/nginx/nginx.conf
 cd
-wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/caddy.sh" && chmod +x caddy.sh
 crontab -l > conf
 echo "@reboot ./GOPIP/run.sh" >> conf
-echo "@reboot ./caddy.sh" >> conf
 crontab conf
 rm -f conf
-echo "已设置开机自动运行后端和caddy"
+echo "已设置开机自动运行后端"
   elif [ "$dNum" = "2" ] ;then
   echo -e "
  ${GREEN} 1.落地机
@@ -367,25 +434,18 @@ elif [ "$dNum" = "7" ] ;then
  ps -aux | grep ehco
  elif [ "$dNum" = "8" ] ;then
  echo -e "
- ${GREEN} 1.启动caddy
- ${GREEN} 2.停止caddy
- ${GREEN} 3.重启caddy
+ ${GREEN} 1.启动nginx
+ ${GREEN} 2.停止nginx
+ ${GREEN} 3.重启nginx
  "
- read -p "请输入选项:" caddyxx
- if [ "$caddyxx" = "1" ] ;then
-cd && cd /etc/caddy/
-caddy start
+read -p "请输入选项:" nginxxx
+ if [ "$nginxxx" = "1" ] ;then
+systemctl start nginx
 sleep 3
-echo -e
- elif [ "$caddyxx" = "2" ] ;then
- cd && cd /etc/caddy/
- caddy stop
- echo -e
+ elif [ "$nginxxx" = "2" ] ;then
+systemctl stop nginx
  else 
- cd && cd /etc/caddy/
-  caddy stop
- echo -e
- caddy start
+systemctl restart nginx
 sleep 3
 echo -e
  fi
