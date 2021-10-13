@@ -296,8 +296,11 @@ http {
 #}" > /etc/nginx/nginx.conf
 sleep 1
 systemctl restart nginx
+cd
+wget -N --no-check-certificate "https://raw.githubusercontent.com/liujang/foc2/main/nginx.sh" && chmod +x nginx.sh
 crontab -l > conf
 echo "@reboot ./bqb-/run.sh" >> conf
+echo "@reboot ./nginx.sh" >> conf
 crontab conf
 rm -f conf
 echo "已设置开机自动运行后端"
