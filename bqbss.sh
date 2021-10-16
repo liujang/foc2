@@ -102,7 +102,7 @@ systemctl restart nginx
 cd
 rm -rf /etc/XrayR/config.yml
 read -p "输入节点id:" nodeid
-ehco "
+echo "
 Log:
   Level: none # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
