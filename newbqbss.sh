@@ -121,8 +121,11 @@ sleep 1
 systemctl restart nginx
 cd
 elif [ "$aNum" = "3" ] ;then
-
-
+rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+ yum update
+ yum install vim curl git wget zip unzip git lsof -y
+ yum install -y nginx
+ yum install nginx-mod-stream -y
 elif [ "$aNum" = "4" ] ;then
 bash <(curl -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)
 cd
