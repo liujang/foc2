@@ -201,15 +201,16 @@ events {
 stream {
     server {
         listen 15973;
+	listen 15973 udp;
         proxy_ssl on;
-        proxy_ssl_protocols TLSv1.2;
+        proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         proxy_ssl_server_name on;
         proxy_ssl_name ${nodeym};
         proxy_pass 127.0.0.1:5678;
     }
     server {
         listen 5678 ssl;
-        ssl_protocols TLSv1.2;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
 	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
         ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
