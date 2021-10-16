@@ -210,6 +210,7 @@ stream {
     }
     server {
         listen 5678 ssl;
+	listen 5678 udp;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
 	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
