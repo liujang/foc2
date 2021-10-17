@@ -130,6 +130,7 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
 echo "
+load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
 user  nginx;
 worker_processes  auto;
 
