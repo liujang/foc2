@@ -155,7 +155,7 @@ stream {
         listen 5678 udp;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
-        ssl_certificate_key /home/${nodeym}/域名/1.key; # 秘钥地址
+        ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
         ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
         proxy_pass 127.0.0.1:11361;
     }
