@@ -126,6 +126,63 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
  yum install vim curl git wget zip unzip git lsof -y
  yum install -y nginx
  yum install nginx-mod-stream -y
+ cd
+rm -rf /etc/nginx/nginx.conf
+read -p "输入域名:" nodeym
+echo "
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+stream {
+    server {
+        listen 15973;
+        listen 15973 udp;
+        proxy_ssl on;
+        proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        proxy_ssl_server_name on;
+        proxy_ssl_name ${nodeym};
+        proxy_pass 127.0.0.1:5678;
+    }
+    server {
+        listen 5678 ssl;
+        listen 5678 udp;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
+        ssl_certificate_key /home/${nodeym}/域名/1.key; # 秘钥地址
+        ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
+        proxy_pass 127.0.0.1:11361;
+    }
+}
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+" > /etc/nginx/nginx.conf
+sleep 1
+systemctl restart nginx
+cd
 elif [ "$aNum" = "4" ] ;then
 bash <(curl -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)
 cd
