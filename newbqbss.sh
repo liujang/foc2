@@ -27,8 +27,14 @@ apt-get update -y
 apt-get install vim curl git wget zip unzip git lsof -y
 apt install nginx -y
 cd
+wget -O ehco https://github.com//Ehco1996/ehco/releases/download/v1.1.0/ehco_1.1.0_linux_amd64
+mv ehco /usr/bin/
+chmod +x /usr/bin/ehco
+export PATH="$PATH:/usr/bin"
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
+read -p "输入ip:" nodeip
+nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 echo "user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -44,7 +50,7 @@ stream {
         proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         proxy_ssl_server_name on;
         proxy_ssl_name ${nodeym};
-        proxy_pass ${nodeym}:5678;
+        proxy_pass ${nodeip}:5678;
     }
     server {
         listen 5678 ssl;
@@ -125,8 +131,14 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
  yum install -y nginx
  yum install nginx-mod-stream -y
  cd
+ wget -O ehco https://github.com//Ehco1996/ehco/releases/download/v1.1.0/ehco_1.1.0_linux_amd64
+mv ehco /usr/bin/
+chmod +x /usr/bin/ehco
+export PATH="$PATH:/usr/bin"
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
+read -p "输入ip:" nodeip
+nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 echo "
 load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
 user  nginx;
@@ -146,7 +158,7 @@ stream {
         proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         proxy_ssl_server_name on;
         proxy_ssl_name ${nodeym};
-        proxy_pass ${nodeym}:5678;
+        proxy_pass ${nodeip}:5678;
     }
     server {
         listen 5678 ssl;
