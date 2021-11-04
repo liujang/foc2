@@ -34,7 +34,6 @@ export PATH="$PATH:/usr/bin"
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
 read -p "输入ip:" nodeip
-nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 echo "user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -123,6 +122,8 @@ http {
 #}" > /etc/nginx/nginx.conf
 sleep 1
 systemctl restart nginx
+sleep 3
+nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 cd
 elif [ "$aNum" = "3" ] ;then
 rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
@@ -138,7 +139,6 @@ export PATH="$PATH:/usr/bin"
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
 read -p "输入ip:" nodeip
-nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 echo "
 load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
 user  nginx;
@@ -191,6 +191,8 @@ http {
 " > /etc/nginx/nginx.conf
 sleep 1
 systemctl restart nginx
+sleep 3
+nohup ehco -l 0.0.0.0:15973 --ur 127.0.0.1:11361 >> /dev/null 2>&1 &
 cd
 elif [ "$aNum" = "4" ] ;then
 bash <(curl -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)
