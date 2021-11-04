@@ -28,7 +28,8 @@ apt-get install vim curl git wget zip unzip git lsof -y
 apt install nginx -y
 cd
 rm -rf /etc/nginx/nginx.conf
-read -p "输入域名:" nodeym
+read -p "输入节点域名:" nodeym
+read -p "输入节点ip:" nodeip
 echo "user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -45,7 +46,7 @@ stream {
         proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         proxy_ssl_server_name on;
         proxy_ssl_name ${nodeym};
-        proxy_pass 127.0.0.1:5678;
+        proxy_pass ${nodeip}:5678;
     }
     server {
         listen 5678 ssl;
@@ -128,7 +129,8 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
  yum install nginx-mod-stream -y
  cd
 rm -rf /etc/nginx/nginx.conf
-read -p "输入域名:" nodeym
+read -p "输入节点域名:" nodeym
+read -p "输入节点ip:" nodeip
 echo "
 load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
 user  nginx;
@@ -146,7 +148,7 @@ stream {
         proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         proxy_ssl_server_name on;
         proxy_ssl_name ${nodeym};
-        proxy_pass 127.0.0.1:5678;
+        proxy_pass ${nodeip}:5678;
     }
     server {
         listen 5678 ssl;
