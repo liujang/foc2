@@ -7,194 +7,12 @@ FUCHSIA="\033[0;35m"
 echo "export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 echo -e "
- ${GREEN} 1.centos禁用selinux
- ${GREEN} 2.对接ss(debian)
- ${GREEN} 3.对接ss(centos)
- ${GREEN} 4.安装XrayR
- ${GREEN} 5.申请ssl证书
- ${GREEN} 6.安装内核
- ${GREEN} 7.删除防火墙
- ${GREEN} 8.增加swap
+ ${GREEN} 1.对接ss(debian)
+ ${GREEN} 2.安装内核
+ ${GREEN} 3.删除防火墙
+ ${GREEN} 4.增加swap
  "
-read -p "输入选项:" aNum
-if [ "$aNum" = "1" ];then
-sed -i 's\SELINUX=enforcing\SELINUX=disabled\g' /etc/selinux/config
-echo "3s后重启系统"
-sleep 3
-reboot
-elif [ "$aNum" = "2" ] ;then
-apt-get update -y
-apt-get install vim curl git wget zip unzip git lsof -y
-apt install nginx -y
-cd
-wget -O ehco https://github.com//Ehco1996/ehco/releases/download/v1.1.0/ehco_1.1.0_linux_amd64
-mv ehco /usr/bin/
-chmod +x /usr/bin/ehco
-export PATH="$PATH:/usr/bin"
-rm -rf /etc/nginx/nginx.conf
-read -p "输入域名:" nodeym
-read -p "输入ip:" nodeip
-echo "user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
-events {
-	worker_connections 768;
-	# multi_accept on;
-}
-stream {
-    server {
-        listen 15973;
-	listen 15973 udp;
-        proxy_ssl on;
-        proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        proxy_ssl_server_name on;
-        proxy_ssl_name ${nodeym};
-        proxy_pass ${nodeip}:5678;
-    }
-    server {
-        listen 5678 ssl;
-	listen 5678 udp;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
-	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
-        ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
-        proxy_pass 127.0.0.1:11361;
-    }
-}
-http {
-	##
-	# Basic Settings
-	##
-	sendfile on;
-	tcp_nopush on;
-	tcp_nodelay on;
-	keepalive_timeout 65;
-	types_hash_max_size 2048;
-	# server_tokens off;
-	# server_names_hash_bucket_size 64;
-	# server_name_in_redirect off;
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
-	##
-	# SSL Settings
-	##
-	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
-	ssl_prefer_server_ciphers on;
-	##
-	# Logging Settings
-	##
-	access_log /var/log/nginx/access.log;
-	error_log /var/log/nginx/error.log;
-	##
-	# Gzip Settings
-	##
-	gzip on;
-	# gzip_vary on;
-	# gzip_proxied any;
-	# gzip_comp_level 6;
-	# gzip_buffers 16 8k;
-	# gzip_http_version 1.1;
-	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-	##
-	# Virtual Host Configs
-	##
-	include /etc/nginx/conf.d/*.conf;
-	include /etc/nginx/sites-enabled/*;
-}
-#mail {
-#	# See sample authentication script at:
-#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
-# 
-#	# auth_http localhost/auth.php;
-#	# pop3_capabilities "TOP" "USER";
-#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
-# 
-#	server {
-#		listen     localhost:110;
-#		protocol   pop3;
-#		proxy      on;
-#	}
-# 
-#	server {
-#		listen     localhost:143;
-#		protocol   imap;
-#		proxy      on;
-#	}
-#}" > /etc/nginx/nginx.conf
-sleep 1
-systemctl restart nginx
-cd
-elif [ "$aNum" = "3" ] ;then
-rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
- yum update -y
- yum install vim curl git wget zip unzip git lsof -y
- yum install -y nginx
- yum install nginx-mod-stream -y
- cd
- wget -O ehco https://github.com//Ehco1996/ehco/releases/download/v1.1.0/ehco_1.1.0_linux_amd64
-mv ehco /usr/bin/
-chmod +x /usr/bin/ehco
-export PATH="$PATH:/usr/bin"
-rm -rf /etc/nginx/nginx.conf
-read -p "输入域名:" nodeym
-read -p "输入ip:" nodeip
-echo "
-load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
-user  nginx;
-worker_processes  auto;
-
-error_log  /var/log/nginx/error.log notice;
-pid        /var/run/nginx.pid;
-
-
-events {
-    worker_connections  1024;
-}
-stream {
-    server {
-        listen 15973;
-	listen 15973 udp;
-        proxy_ssl on;
-        proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        proxy_ssl_server_name on;
-        proxy_ssl_name ${nodeym};
-        proxy_pass ${nodeip}:5678;
-    }
-    server {
-        listen 5678 ssl;
-	listen 5678 udp;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
-	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
-        ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
-        proxy_pass 127.0.0.1:11361;
-    }
-}
-http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
-
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile        on;
-    #tcp_nopush     on;
-
-    keepalive_timeout  65;
-
-    #gzip  on;
-
-    include /etc/nginx/conf.d/*.conf;
-}
-" > /etc/nginx/nginx.conf
-sleep 1
-systemctl restart nginx
-cd
-elif [ "$aNum" = "4" ] ;then
+if [ "$aNum" = "1" ] ;then
 bash <(curl -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)
 cd
 rm -rf /etc/XrayR/config.yml
@@ -230,7 +48,7 @@ Nodes:
       DeviceLimit: 0 # Local settings will replace remote settings, 0 means disable
       RuleListPath: # ./rulelist Path to local rulelist file
     ControllerConfig:
-      ListenIP: 127.0.0.1 # IP address you want to listen
+      ListenIP: 0.0.0.0 # IP address you want to listen
       SendIP: 0.0.0.0 # IP address you want to send pacakage
       UpdatePeriodic: 60 # Time to update the nodeinfo, how many sec.
       EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
@@ -282,11 +100,11 @@ Nodes:
 " > /etc/XrayR/config.yml
 cd
 XrayR restart
-elif [ "$aNum" = "5" ] ;then
+elif [ "$aNum" = "2" ] ;then
 bash <(curl -s -L git.io/dmSSL)
 elif [ "$aNum" = "6" ] ;then
 wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
-elif [ "$aNum" = "7" ] ;then
+elif [ "$aNum" = "3" ] ;then
 if [[ "$EUID" -ne 0 ]]; then
     echo "false"
   else
@@ -318,7 +136,7 @@ apt-get purge ufw
   else
     exit 1
   fi
-elif [ "$aNum" = "8" ] ;then
+elif [ "$aNum" = "4" ] ;then
 echo "
        Creat-SWAP by yanglc
        本脚本仅在Debian系系统下进行过测试
