@@ -102,8 +102,6 @@ Nodes:
 cd
 XrayR restart
 elif [ "$aNum" = "2" ] ;then
-bash <(curl -s -L git.io/dmSSL)
-elif [ "$aNum" = "6" ] ;then
 wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 elif [ "$aNum" = "3" ] ;then
 if [[ "$EUID" -ne 0 ]]; then
