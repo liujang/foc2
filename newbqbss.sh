@@ -12,6 +12,7 @@ echo -e "
  ${GREEN} 3.删除防火墙
  ${GREEN} 4.增加swap
  "
+ read -p "输入选项:" aNum
 if [ "$aNum" = "1" ] ;then
 bash <(curl -Ls https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)
 cd
