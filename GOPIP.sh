@@ -189,6 +189,7 @@ bash <(curl -s -L git.io/dmSSL)
 cd
 rm -rf /etc/nginx/nginx.conf
 read -p "输入域名:" nodeym
+read -p "输入节点ip:" nodeip
 echo "user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -198,23 +199,23 @@ events {
 	# multi_accept on;
 }
 stream {
-upstream tcp_proxy {
-        hash $remote_addr consistent;
-        server ${nodeym}:30001;   #B服务器域名
-        #下面的配置是负载均衡配置，可配置多个服务器，默认是轮询模式
-        #server yyy.herokuapp.con:443;   #c服务器域名
-    }
     server {
         listen 15973;
-        listen 15973 udp;
-        proxy_connect_timeout 1s;
-        proxy_timeout 60s;
-        proxy_pass tcp_proxy;
-        ssl_protocols       TLSv1.2 TLSv1.3;      # 设置使用的SSL协议版本
+	listen 15973 udp;
+        proxy_ssl on;
+        proxy_ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        proxy_ssl_server_name on;
+        proxy_ssl_name ${nodeym};
+        proxy_pass ${nodeip}:5678;
+    }
+    server {
+        listen 5678 ssl;
+	listen 5678 udp;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_certificate /home/ssl/${nodeym}/1.pem; # 证书地址
 	ssl_certificate_key /home/ssl/${nodeym}/1.key; # 秘钥地址
-        ssl_session_cache   shared:SSL:10m;
-        ssl_session_timeout 10m;
+        ssl_session_cache off;  # 可选，我把TLS会话缓存关闭了。
+        proxy_pass 127.0.0.1:30001;
     }
 }
 http {
@@ -402,11 +403,6 @@ echo -e "
 sed -i '4s/'${oldport}'/'${newport}'/' user-config.json
 sed -i '22s/'${oldport}'/'${newport}'/' user-config.json
 chmod +x run.sh && ./run.sh
-cd && cd /etc/caddy/
-  caddy stop
- sleep 2
- sed -i '7s/'${oldport}'/'${newport}'/' Caddyfile
- caddy start
 echo "已更换完成，记得前端网站改端口哦！！！"
 elif [ "$gNum" = "2" ] ;then
 cd
